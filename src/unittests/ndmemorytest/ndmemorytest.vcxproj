@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\unittests.props" />
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{ffd1d086-e7e1-4506-8957-4e083ef2acb5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ndMemoryTest</RootNamespace>
+    <ProjectName>ndmemorytest</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <CallingConvention>StdCall</CallingConvention>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include=".\ndconnectlistenerclosing.cpp" />
+    <ClCompile Include=".\ndconnrejectclose.cpp" />
+    <ClCompile Include=".\nddualconnection.cpp" />
+    <ClCompile Include=".\ndduallisten.cpp" />
+    <ClCompile Include=".\ndinvalidip.cpp" />
+    <ClCompile Include=".\ndinvalidreadwrite.cpp" />
+    <ClCompile Include=".\ndlargeprivatedata.cpp" />
+    <ClCompile Include=".\ndlargeqpdepth.cpp" />
+    <ClCompile Include=".\ndmemorytest.cpp" />
+    <ClCompile Include=".\ndmrderegister.cpp" />
+    <ClCompile Include=".\ndmrinvalidbuffer.cpp" />
+    <ClCompile Include=".\ndoverreadwrite.cpp" />
+    <ClCompile Include=".\ndqpmaxall.cpp" />
+    <ClCompile Include=".\ndreceiveflushqp.cpp" />
+    <ClCompile Include=".\ndsendnoreceive.cpp" />
+    <ClCompile Include=".\ndreceiveconnectorclosed.cpp" />
+    <ClCompile Include=".\ndwriteviolation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ndmemorytest.h" />
+  </ItemGroup>
+  <PropertyGroup>
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
