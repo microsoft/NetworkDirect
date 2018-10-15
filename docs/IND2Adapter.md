@@ -9,11 +9,9 @@ The IND2Adapter interface inherits from [IUnknown interface](https://docs.micros
 - [__QueryAddressList__](#query-address-list) - Returns the IPv4 and IPv6 addresses that are supported by the adapter instance.
 - [__CreateCompletionQueue__](#create-completion-queue) - Allocates a completion queue.
 - [__CreateMemoryRegion__](#create-memory-region) - Creates an [IND2MemoryRegion](./IND2MemoryRegion.md) instance that can be used to register an application-defined buffer to be used in requests issued to the initiator and receive queues of a queue pair.
-- [__CreateMemoryWindow__](#create-memory-window) - Creates a [IND2MemoryWindow](./IND2MemoryWindow.md) instance in the invalidated state.
 - [__CreateSharedReceiveQueue__](#create-shared-receive-queue) - Creates a new [IND2SharedReceiveQueue](./IND2SharedReceiveQueue.md) instance.
 - [__CreateQueuePair__](#create-queue-pair) - Creates a new [IND2QueuePair](./IND2QueuePair.md) instance.
 - [__CreateQueuePairWithSrq__](#create-queue-pair-with-srq) - Creates a new [IND2QueuePair](./IND2QueuePair.md) instance that uses a shared receive queue.
-- [__CreateSharedEndpoint__](#create-shared-endpoint) - Creates a [IND2SharedEndpoint](./IND2SharedEndpoint.md) instance that allows connections to share local addresses.
 - [__CreateConnector__](#create-connector) - Creates a new [IND2Connector](./IND2Connector.md) instance.
 - [__CreateListener__](#create-listener) - Creates a new [IND2Listener](./IND2Listener.md) instance that listens for incoming connection requests.
 
@@ -121,7 +119,7 @@ __Members:__
 
 - __MaxWindowSize__
 
-  The maximum size, in bytes, of a memory window. (See [IND2Adapter::CreateMemoryWindow](#create-memory-window).)
+  Not used
 
 - __MaxInitiatorSge__
 
@@ -177,7 +175,7 @@ __Members:__
 
 - __MaxCallerData__
 
-  The maximum size, in bytes, of the private data that can be sent when calling the [IND2Connector::Connect](IND2Connector.md#connect-method) method or the [IND2Connector::ConnectSharedEndpoint](IND2Connector.md#connect-shared-endpoint) method.
+  The maximum size, in bytes, of the private data that can be sent when calling the [IND2Connector::Connect](IND2Connector.md#connect-method) method.
 
 - __MaxCalleeData__
 
@@ -189,7 +187,7 @@ __Members:__
 
   - __ND_ADAPTER_FLAG_IN_ORDER_DMA_SUPPORTED__
  
-       Flag indicating whether the adapter places the data in memory in order. May allow some optimizations in data transfers, although care must be taken in platforms where DMA controllers can buffer or reorder memory writes.
+       Flag indicating whether the adapter places the data in memory in order. May allow some optimization in data transfers, although care must be taken in platforms where DMA controllers can buffer or reorder memory writes.
      
   - __ND_ADAPTER_FLAG_CQ_INTERRUPT_MODERATION_SUPPORTED__
     
@@ -379,41 +377,6 @@ When you implement this method, you should return the following return values. I
 __Remarks__
 
 You must create memory regions to reference memory in data transfer operations.
-
-## [IND2Adapter::CreateMemoryWindow](#create-memory-window)
-Creates an uninitialized memory window.
-```
-HRESULT CreateMemoryWindow(
- [in]  REFIID iid, 
- [out] void **ppMemoryWindow
-);
-```
-
-__Parameters:__
-- __iid__ [in]
-
-  The IID of the memory region interface requested. IID_IND2MemoryWindow must be supported, but other IIDs may be supported as new interfaces are defined.
-- __ppMemoryWindow__ [out] 
-
-  An [IND2MemoryWindow](./IND2MemoryWindow.md) interface.
-
-__Return Value:__
-
-When you implement this method, you should return the following return values. If you return others, try to use well-known values to aid in debugging issues.
-
-- __ND_SUCCESS__ - The operation completed successfully.
-- __ND_INSUFFICIENT_RESOURCES__ - There was not enough hardware resources to create the memory window.
-- __ND_DEVICE_REMOVED__ - The underlying NetworkDirect adapter was removed from the system. Only cleanup operations on the NetworkDirect adapter will succeed.
-
-__Remarks__
-
-You need to create a memory window and bind it to registered memory only if the connected peer is going to perform _Read_ and _Write_ operations and you want fine-grained access control to a long-lived memory registration. The side issuing the _Read_ and _Write_ requests does not create the memory window.
-
-The memory window becomes valid when you bind it to registered memory. For more information, see [IND2Adapter::CreateMemoryRegion](#create-memory-region) method. 
-
-To bind the window to registered memory, call the [IND2QueuePair::Bind](./IND2QueuePair.md#bind-method) method. The window can be bound to only a single queue pair at one time. However, the window could be bound to a different queue pair after being invalidated.
-
-To invalidate the window, call the [IND2QueuePair::Invalidate](./IND2QueuePair.md#invalidate-method) method. You should not invalidate the window unless you receive a message from the connected peer indicating that the connected peer is done accessing the window. 
 
 ## [IND2Adapter::CreateSharedReceiveQueue](#create-shared-receive-queue)
 Allocates a shared receive queue.
@@ -640,32 +603,6 @@ An instance of the [IND2Connector](./IND2Connector.md) interface can have only a
 
 When using a shared receive queue, client applications cannot depend on credit flow control. Flow control in this case is managed by the hardware.
 
-## [IND2Adapter::CreateSharedEndpoint](#create-shared-endpoint)
-Creates a new IND2SharedEndpoint instance.
-```
-HRESULT CreateSharedEndpoint(
- [in]  REFIID iid, 
- [out] void **ppSharedEndpoint
-);
-```
-
-__Parameters:__
-- __iid__ [in]
-
-  The IID of the memory region interface requested. IID_IND2MemoryRegion must be supported, but other IIDs may be supported as new interfaces are defined.
-
-- __ppSharedEndpoint__ [out] 
-
-  The requested interface that you use to connect to a remote peer.
-
-__Return Value:__
-
-When you implement this method, you should return the following return values. If you return others, try to use well-known values to aid in debugging issues.
-
-- __ND_SUCCESS__ - The operation completed successfully.
-- __ND_NO_MEMORY__ - There was not enough memory to create the connector.
-- __ND_INSUFFICIENT_RESOURCES__ - There were not enough hardware resources to create the connector.
-- __ND_DEVICE_REMOVED__ - The underlying NetworkDirect adapter was removed from the system. Only cleanup operations on the NetworkDirect adapter will succeed.
 
 ## IND2Adapter::CreateConnector
 Creates a new [IND2Connector](./IND2Connector.md) instance.

@@ -72,7 +72,7 @@ When you implement this method, you should return the following return values. I
 - __ND_INSUFFICIENT_RESOURCES__ - The requested number of entries could not be allocated.
 - __ND_INVALID_PARAMETER__ - The requested number of entries exceeds the capabilities of the hardware.
 - __ND_DEVICE_REMOVED__ - The underlying NetworkDirect adapter was removed from the system. Only cleanup operations on the NetworkDirect adapter will succeed.
-- __ND_NOT_SUPPORTED__ - The underlying NetworkDirect adapter does not support resizing of completion queues. ND_ADAPTER_FLAG_CQ_RESIZE_SUPPORTED flag in _AdapterFlags_ of ND2_ADAPTER_INFO indicates whether resizing of a completion queue is supported.
+- __ND_NOT_SUPPORTED__ - The underlying NetworkDirect adapter does not support resizing of completion queues. ND_ADAPTER_FLAG_CQ_RESIZE_SUPPORTED flag in _AdapterFlags_ of [ND2_ADAPTER_INFO](./IND2Adapter.md#adapter-info) indicates whether resizing of a completion queue is supported.
 
 __Implementation Notes:__
 

@@ -18,7 +18,7 @@ __Requirements for InfiniBand:__
 
 NetworkDirect providers use IP addresses to represent local and remote queue pairs, and it is the responsibility of the InfiniBand providers to manage mappings from these IP addresses to path records. Provides should use a distinct port space for RDMA connections, and only map to host TCP ports when absolutely necessary.
 
-InfiniBand vendors should use the IP addressing annex to the IP specification for formatting the connection establishment messages. Infiniband providers can use the TCP port space for connection management, but the port space should be managed separately from the host port space.
+InfiniBand vendors should use the IP addressing annex to the IP specification for formatting the connection establishment messages. InfiniBand providers can use the TCP port space for connection management, but the port space should be managed separately from the host port space.
 
 The InfiniBand 1.2 specification defines extensions to the architecture that provides matching semantics to iWARP. Specifically, the NetworkDirect SPI makes use of the following extensions:
 - Base Queue Management Extensions
@@ -115,7 +115,7 @@ __Parameters:__
   The IID of the adapter interface requested. IID_IND2Adapter must be supported, but other IIDs may be supported as new interfaces are defined.
 - __adapterId__ [in] 
 
-  ID returned by a previous call to the IND2Provider::ResolveAddress method.
+  ID returned by a previous call to the [IND2Provider::ResolveAddress](#resolve-address) method.
 - __ppAdapter__ [out] 
   
   The requested interface to the opened adapter. 
