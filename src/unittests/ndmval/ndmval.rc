@@ -1,0 +1,6 @@
+#define RC_FILE_TYPE VFT_APP
+#define RC_VERSION_INTERNAL_NAME "ndmval\0"
+#define RC_VERSION_ORIGINAL_FILE_NAME "ndmval.exe\0"
+#define RC_VERSION_FILE_DESCRIPTION "NetworkDirect memory validation test\0"
+    
+#include <..\examples\bldver.rc>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\src.props" />
+
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{6955ED94-3B21-4835-838A-A797AFF63183}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ndutil</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <StagingOutputPath>$(MSBuildProjectName)</StagingOutputPath>
+    <OutFileType>*.lib</OutFileType>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>WindowsUserModeDriver10.0</PlatformToolset>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>precomp.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>.;$(OutIncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <Link>
+    </Link>
+    <PreBuildEvent>
+      <Command>if not exist $(OutIncludePath) mkdir $(OutIncludePath)</Command>
+      <Message>Create Include folder</Message>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>robocopy .\ $(OutIncludePath)\ nddef.h ndioctl.h ndspi.h
+set rc=%errorlevel%
+if not %rc%==1 exit %rce% else exit 0</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy header files to include folder</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <ClInclude Include="assertutil.h" />
+    <ClInclude Include="list.h" />
+    <ClInclude Include="ndaddr.h" />
+    <ClInclude Include="ndfrmwrk.h" />
+    <ClInclude Include="ndprov.h" />
+    <ClInclude Include="ndutil.h" />
+    <ClInclude Include="precomp.h" />
+    <QCustomOutput Include="$(OutputPath)\ndutil.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ndaddr.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ndfrmwrk.cpp" />
+    <ClCompile Include="ndprov.cpp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <MessageCompile Include="ndstatus.mc">
+      <GeneratedHeaderPath>true</GeneratedHeaderPath>
+      <HeaderFilePath>$(OutIncludePath)</HeaderFilePath>
+      <GeneratedRCAndMessagesPath>true</GeneratedRCAndMessagesPath>
+      <RCFilePath>.</RCFilePath>
+    </MessageCompile>
+  </ItemGroup>
+
+  <!-- WDK.common.props resets this configuration, so explicitly set the value -->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
