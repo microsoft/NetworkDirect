@@ -270,7 +270,7 @@ The remote peer or connecting peer can call this method to reject the connection
 ## IND2Connector::GetReadLimits
 Retrieves the read limits of the peer.
 ```
-HRESULT GetPrivateData(
+HRESULT GetReadLimits(
  [out, optional] ULONG *pInboundReadLimit,
  [out, optional] ULONG *pOutboundReadLimit,
 );
