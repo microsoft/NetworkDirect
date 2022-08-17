@@ -390,7 +390,7 @@ HRESULT CreateMemoryWindow(
 __Parameters:__
 - __iid__ [in]
 
-  The IID of the memory region interface requested. IID_IND2MemoryRegion must be supported, but other IIDs may be supported as new interfaces are defined.
+  The IID of the memory window interface requested. IID_IND2MemoryWindow must be supported, but other IIDs may be supported as new interfaces are defined.
   
 - __ppMemoryWindow__ [out]
 
@@ -433,7 +433,7 @@ HRESULT CreateSharedReceiveQueue(
 __Parameters:__
 - __iid__ [in]
 
-  The IID of the memory region interface requested. IID_IND2SharedReceiveQueue must be supported, but other IIDs may be supported as new interfaces are defined.
+  The IID of the shared receive queue interface requested. IID_IND2SharedReceiveQueue must be supported, but other IIDs may be supported as new interfaces are defined.
 - __hOverlappedFile__ [in]
 
   Handle returned by a previous call to [IND2Adapter::CreateOverlappedFile](#ind2adaptercreateoverlappedfile), on which overlapped operations on this shared receive queue should be performed.
@@ -496,7 +496,7 @@ HRESULT CreateQueuePair(
 __Parameters:__
 - __iid__ [in]
 
-  The IID of the memory region interface requested. IID_IND2QueuePair must be supported, but other IIDs may be supported as new interfaces are defined.
+  The IID of the queue pair interface requested. IID_IND2QueuePair must be supported, but other IIDs may be supported as new interfaces are defined.
 - __pReceiveCompletionQueue__ [in] 
 
   An [IND2CompletionQueue](./IND2CompletionQueue.md) interface. The interface is used to queue _Receive_ request results.
@@ -575,7 +575,7 @@ HRESULT CreateQueuePairWithSrq(
 __Parameters:__
 - __iid__ [in]
 
-  The IID of the memory region interface requested. IID_IND2QueuePair must be supported, but other IIDs may be supported as new interfaces are defined.
+  The IID of the queue pair interface requested. IID_IND2QueuePair must be supported, but other IIDs may be supported as new interfaces are defined.
 
 - __pReceiveCompletionQueue__ [in] 
 
@@ -654,7 +654,7 @@ HRESULT CreateConnector(
 __Parameters:__
 - __iid__ [in]
 
-  The IID of the memory region interface requested. IID_IND2Connector must be supported, but other IIDs may be supported as new interfaces are defined.
+  The IID of the connector interface requested. IID_IND2Connector must be supported, but other IIDs may be supported as new interfaces are defined.
 
 - __hOverlappedFile__ [in]
 
@@ -686,7 +686,7 @@ HRESULT CreateListener(
 __Parameters:__
 - __iid__ [in]
 
-  The IID of the memory region interface requested. IID_IND2Listener must be supported, but other IIDs may be supported as new interfaces are defined.
+  The IID of the listener interface requested. IID_IND2Listener must be supported, but other IIDs may be supported as new interfaces are defined.
 
 - __hOverlappedFile__ [in]
 
