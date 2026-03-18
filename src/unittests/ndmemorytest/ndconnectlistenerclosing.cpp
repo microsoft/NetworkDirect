@@ -52,7 +52,7 @@ void NdConnectListenerClosingClient::RunTest(
     Sleep(1000);
 
     //connect shoud get connection refused, because the other side has closed the listener
-    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, nullptr, 0,
+    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, TRUE, nullptr, 0,
         ND_CONNECTION_REFUSED, "Connecting to closed/closing listener should get connection refused");
     printf("NdConnListenClosing: passed\n");
 }

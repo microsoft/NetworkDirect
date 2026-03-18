@@ -23,6 +23,7 @@ void NdInvalidIPClient::RunTest(
     _In_ DWORD nSge
 )
 {
+    HRESULT hr;
     // prep
     NdTestBase::Init(v4Src);
     NdTestBase::CreateMR();
@@ -32,7 +33,18 @@ void NdInvalidIPClient::RunTest(
     NdTestBase::CreateQueuePair(queueDepth, nSge);
 
     // connect to invalid ip address (address has been changed outside)
-    NdTestClientBase::Connect(v4Src, v4Dst, 0, 0, nullptr, 0, STATUS_BAD_NETWORK_NAME,
-        "Expecting STATUS_BAD_NETWORK_NAME when destination IP is invalid");
+    hr = NdTestClientBase::Connect(v4Src, v4Dst, 0, 0, FALSE);
+
+    /*
+      The NetworkDirect Service Provider Interface Version 2 specification says that
+      ND_NETWORK_UNREACHABLE should be returned. Some vendors' NDSPI providers return
+      STATUS_BAD_NETWORK_NAME instead so accept both values.
+    */
+
+    if ((hr != STATUS_BAD_NETWORK_NAME) && (hr != ND_NETWORK_UNREACHABLE))
+    {
+        LogErrorExit(hr, "Expecting STATUS_BAD_NETWORK_NAME or ND_NETWORK_UNREACHABLE when destination IP is invalid", __LINE__);
+    }
+
     printf("NdInvalidIP: passed\n");
 }

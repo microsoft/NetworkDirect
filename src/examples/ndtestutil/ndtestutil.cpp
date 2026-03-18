@@ -561,11 +561,12 @@ void NdTestServerBase::Accept(
 //
 // Connect to the server.
 //
-void NdTestClientBase::Connect(
+HRESULT NdTestClientBase::Connect(
     _In_ const sockaddr_in& v4Src,
     _In_ const sockaddr_in& v4Dst,
     DWORD inboundReadLimit,
     DWORD outboundReadLimit,
+    BOOL checkResult,
     const VOID *pPrivateData,
     DWORD cbPrivateData,
     HRESULT expectedResult,
@@ -573,12 +574,13 @@ void NdTestClientBase::Connect(
 {
     HRESULT hr = m_pConnector->Bind(
         reinterpret_cast<const sockaddr*>(&v4Src),
-        sizeof(v4Src)
-    );
+        sizeof(v4Src));
+
     if (hr == ND_PENDING)
     {
         hr = m_pConnector->GetOverlappedResult(&m_Ov, TRUE);
     }
+    else if (hr != ND_SUCCESS) return hr;
 
     hr = m_pConnector->Connect(
         m_pQp,
@@ -588,13 +590,19 @@ void NdTestClientBase::Connect(
         outboundReadLimit,
         pPrivateData,
         cbPrivateData,
-        &m_Ov
-    );
+        &m_Ov);
+
     if (hr == ND_PENDING)
     {
         hr = m_pConnector->GetOverlappedResult(&m_Ov, TRUE);
     }
-    LogIfErrorExit(hr, expectedResult, errorMessage, __LINE__);
+
+    if (checkResult)
+    {
+        LogIfErrorExit(hr, expectedResult, errorMessage, __LINE__);
+    }
+
+    return hr;
 }
 
 //

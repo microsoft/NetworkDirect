@@ -342,11 +342,12 @@ public:
 
     //connect to server
     //bind then connect
-    void Connect(
+    HRESULT Connect(
         _In_ const sockaddr_in& v4Src,
         _In_ const sockaddr_in& v4Dst,
         DWORD inboundReadLimit,
         DWORD outboundReadLimit,
+        BOOL checkResult = TRUE,
         const VOID *pPrivateData = nullptr,
         DWORD cbPrivateData = 0,
         HRESULT expectedResult = ND_SUCCESS,
