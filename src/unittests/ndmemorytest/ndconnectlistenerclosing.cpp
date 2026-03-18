@@ -17,7 +17,7 @@ void NdConnectListenerClosingServer::RunTest(
     NdTestBase::Init(v4Src);
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_HdrLen + x_MaxXfer + 1, ND_MR_FLAG_ALLOW_LOCAL_WRITE);
-    NdTestBase::CreateCQ(nSge);
+    NdTestBase::CreateCQ(queueDepth*2);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(queueDepth, nSge);
 
@@ -44,7 +44,7 @@ void NdConnectListenerClosingClient::RunTest(
     NdTestBase::Init(v4Src);
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_MaxXfer, ND_MR_FLAG_ALLOW_LOCAL_WRITE, ND_SUCCESS);
-    NdTestBase::CreateCQ(nSge, ND_SUCCESS);
+    NdTestBase::CreateCQ(queueDepth*2, ND_SUCCESS);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(queueDepth, nSge);
 
@@ -52,7 +52,7 @@ void NdConnectListenerClosingClient::RunTest(
     Sleep(1000);
 
     //connect shoud get connection refused, because the other side has closed the listener
-    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, nullptr, 0,
+    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, TRUE, nullptr, 0,
         ND_CONNECTION_REFUSED, "Connecting to closed/closing listener should get connection refused");
     printf("NdConnListenClosing: passed\n");
 }

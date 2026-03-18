@@ -16,10 +16,14 @@
 //  3. Try to receive from client
 //  4. Expect ND_BUFFER_OVERFLOW
 
+typedef long NTSTATUS;
 // to get STATUS_DATA_ERROR
 #include <ntstatus.h>
 // define WIN32_NO_STATUS so that STATUS_* types are not defined again
 #define WIN32_NO_STATUS
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include <logging.h>
 #include <ndtestutil.h>
@@ -80,7 +84,7 @@ public:
 
         NdTestBase::CreateCQ(adapterInfo.MaxCompletionQueueDepth);
         NdTestBase::CreateConnector();
-        NdTestBase::CreateQueuePair(adapterInfo.MaxReceiveQueueDepth, 1);
+        NdTestBase::CreateQueuePair(min(adapterInfo.MaxInitiatorQueueDepth, adapterInfo.MaxReceiveQueueDepth), 1);
 
         NdTestClientBase::Connect(v4Src, v4Dst, 0, 0);
         NdTestClientBase::CompleteConnect();
@@ -160,7 +164,7 @@ public:
         NdTestBase::GetAdapterInfo(&adapterInfo);
         NdTestBase::CreateCQ(adapterInfo.MaxCompletionQueueDepth);
         NdTestBase::CreateConnector();
-        NdTestBase::CreateQueuePair(adapterInfo.MaxReceiveQueueDepth, 1);
+        NdTestBase::CreateQueuePair(min(adapterInfo.MaxReceiveQueueDepth, adapterInfo.MaxInitiatorQueueDepth), 1);
         NdTestServerBase::CreateListener();
         NdTestServerBase::Listen(v4Src);
         NdTestServerBase::GetConnectionRequest();
@@ -308,3 +312,4 @@ int __cdecl _tmain(int argc, TCHAR* argv[])
     WSACleanup();
     return 0;
 }
+

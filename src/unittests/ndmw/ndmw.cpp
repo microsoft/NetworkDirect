@@ -36,6 +36,9 @@
 //  12. Send 0-byte message indicating second test complete.
 //  13. Disconnect
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include <logging.h>
 #include <ndtestutil.h>
@@ -336,7 +339,7 @@ public:
         sge.MemoryRegionToken = m_pMr->GetLocalToken();
         NdTestBase::PostReceive(&sge, 1, RECV_CTXT);
 
-        NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, &x_DefaultData, sizeof(x_DefaultData));
+        NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, TRUE, &x_DefaultData, sizeof(x_DefaultData));
 
         ULONG pDataLen = 0;
         if (m_pConnector->GetPrivateData(nullptr, &pDataLen) != ND_BUFFER_OVERFLOW)

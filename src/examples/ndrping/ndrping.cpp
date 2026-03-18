@@ -9,7 +9,9 @@
 // operations to its heart's content with no further involvement
 // of the server.
 //
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include "ndtestutil.h"
 #include <logging.h>
@@ -222,6 +224,7 @@ public:
 
         m_queueDepth = (queueDepth > 0) ? min(queueDepth, adapterInfo.MaxCompletionQueueDepth) : adapterInfo.MaxCompletionQueueDepth;
         m_queueDepth = min(m_queueDepth, adapterInfo.MaxInitiatorQueueDepth);
+        m_queueDepth = min(m_queueDepth, adapterInfo.MaxReceiveQueueDepth);
         m_nMaxSge = min(nSge, adapterInfo.MaxInitiatorSge);
         m_inlineThreshold = adapterInfo.InlineRequestThreshold;
         if (m_opRead)
@@ -248,7 +251,9 @@ public:
 
         NdTestBase::CreateCQ(m_queueDepth);
         NdTestBase::CreateConnector();
-        NdTestBase::CreateQueuePair(min(m_queueDepth, adapterInfo.MaxReceiveQueueDepth), nSge, m_inlineThreshold);
+        DWORD q_depth = min(m_queueDepth, adapterInfo.MaxReceiveQueueDepth);
+        q_depth = min(q_depth, adapterInfo.MaxInitiatorQueueDepth);
+        NdTestBase::CreateQueuePair(q_depth, nSge, m_inlineThreshold);
 
         ND2_SGE sge;
         sge.Buffer = m_pBuf;

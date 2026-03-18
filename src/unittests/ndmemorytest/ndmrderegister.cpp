@@ -17,7 +17,7 @@ void NdMRDeregisterServer::RunTest(
     NdTestBase::Init(v4Src);
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_HdrLen + x_MaxXfer, ND_MR_FLAG_ALLOW_LOCAL_WRITE);
-    NdTestBase::CreateCQ(nSge);
+    NdTestBase::CreateCQ(queueDepth*2);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(queueDepth, nSge);
 
@@ -35,6 +35,11 @@ void NdMRDeregisterServer::RunTest(
 
     //this call should fail, because there's still memory window bound to it
     HRESULT hr = m_pMr->Deregister(&m_Ov);
+
+    if (hr == ND_PENDING)
+    {
+        hr = m_pMr->GetOverlappedResult(&m_Ov, TRUE);
+    }
     LogIfErrorExit(hr, ND_DEVICE_BUSY,
         "Deregistering memory region with memory window bound it should get ND_DEVICE_BUSY!", __LINE__);
 
@@ -54,7 +59,7 @@ void NdMRDeregisterClient::RunTest(
     NdTestBase::Init(v4Src);
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_MaxXfer, ND_MR_FLAG_ALLOW_LOCAL_WRITE);
-    NdTestBase::CreateCQ(nSge, ND_SUCCESS);
+    NdTestBase::CreateCQ(queueDepth*2, ND_SUCCESS);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(queueDepth, nSge);
 

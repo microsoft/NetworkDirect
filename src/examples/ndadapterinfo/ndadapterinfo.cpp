@@ -8,6 +8,9 @@
 // valid NetworkDirect addresses.  If there are no addresses the test
 // generates an error.
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include <logging.h>
 #include <string>

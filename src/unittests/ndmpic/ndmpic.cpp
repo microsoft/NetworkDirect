@@ -22,7 +22,9 @@
 //  4. On each connection, acknowledge the 'close' message with a 'close_ack'
 //  5. Wait for completion of 'close_ack' send
 //  6. Tear-down connection
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include <logging.h>
 

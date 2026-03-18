@@ -4,8 +4,12 @@
 // ndconn.cpp - NetworkDirect connection scalability test
 //
 
-#include "ntstatus.h"
-#define WIN32_NO_STATUS
+typedef long NTSTATUS;      // required by ntstatus.h
+#include <ntstatus.h>
+#define WIN32_LEAN_AND_MEAN
+#define WIN32_NO_STATUS     // prevent STATUS_XXX codes being redefined when we include windows.h
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include "ndconn.h"
 #include "logging.h"

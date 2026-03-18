@@ -35,7 +35,7 @@ namespace NetworkDirect
 
     public:
         Provider(int version);
-        ~Provider(void);
+        virtual ~Provider(void);
         HRESULT Init(GUID& ProviderGuid);
         void MarkActive(void) { m_Active = true; }
         void MarkInactive(void) { m_Active = false; }
@@ -80,7 +80,6 @@ namespace NetworkDirect
     {
     public:
         NdV1Provider();
-        ~NdV1Provider();
 
         HRESULT OpenAdapter(
             _In_ REFIID iid,
@@ -103,7 +102,6 @@ namespace NetworkDirect
     {
     public:
         NdProvider();
-        ~NdProvider();
 
         HRESULT OpenAdapter(
             _In_ REFIID iid,

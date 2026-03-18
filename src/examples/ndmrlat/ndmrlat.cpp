@@ -3,7 +3,9 @@
 //
 // ndmrlat.cpp - NetworkDirect memory registration latency test
 //
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include <logging.h>
 #include "ndtestutil.h"

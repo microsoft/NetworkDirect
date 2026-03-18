@@ -4,10 +4,13 @@
 //
 // ndping.cpp - NetworkDirect unidirectional send/recv ping test
 //
-
+#define WIN32_LEAN_AND_MEAN
+#include <initguid.h>
+#include <windows.h>
 #include "ndcommon.h"
 #include "ndtestutil.h"
 #include <logging.h>
+#include "ndspi.h"
 
 const USHORT x_DefaultPort = 54324;
 const SIZE_T x_MaxXfer = (4 * 1024 * 1024);
@@ -63,6 +66,7 @@ public:
         ND2_ADAPTER_INFO adapterInfo = { 0 };
         NdTestBase::GetAdapterInfo(&adapterInfo);
         m_queueDepth = min(adapterInfo.MaxCompletionQueueDepth, adapterInfo.MaxReceiveQueueDepth);
+        m_queueDepth = min(m_queueDepth, adapterInfo.MaxInitiatorQueueDepth);
         m_queueDepth = (queueDepth != 0) ? min(queueDepth, m_queueDepth) : m_queueDepth;
         m_inlineSizeThreshold = adapterInfo.InlineRequestThreshold;
 
@@ -196,6 +200,7 @@ public:
         ND2_ADAPTER_INFO adapterInfo;
         NdTestBase::GetAdapterInfo(&adapterInfo);
         m_queueDepth = min(adapterInfo.MaxCompletionQueueDepth, adapterInfo.MaxInitiatorQueueDepth);
+        m_queueDepth = min(m_queueDepth, adapterInfo.MaxReceiveQueueDepth);
         m_queueDepth = (queueDepth != 0) ? min(queueDepth, m_queueDepth) : m_queueDepth;
         m_inlineSizeThreshold = adapterInfo.InlineRequestThreshold;
 

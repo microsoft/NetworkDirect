@@ -125,7 +125,7 @@ void NdInvalidReadWriteClient::RunTest(
     NdTestBase::RegisterDataBuffer(x_HdrLen + x_MaxXfer,
         ND_MR_FLAG_ALLOW_REMOTE_READ | ND_MR_FLAG_ALLOW_REMOTE_WRITE);
 
-    NdTestBase::CreateCQ(2, ND_SUCCESS);
+    NdTestBase::CreateCQ(4, ND_SUCCESS);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(2, 1);
     NdTestClientBase::Connect(v4Src, v4Dst, 1, 1);

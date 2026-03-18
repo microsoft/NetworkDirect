@@ -4,7 +4,9 @@
 //
 // ndrpingpong.cpp - NetworkDirect bidirectional RDMA write ping-pong test
 //
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include "ndtestutil.h"
 #include <logging.h>

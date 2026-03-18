@@ -17,8 +17,6 @@ void NdQPMaxAllServer::RunTest(
     NdTestBase::Init(v4Src);
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_HdrLen + x_MaxXfer, ND_MR_FLAG_ALLOW_LOCAL_WRITE);
-    NdTestBase::CreateCQ(nSge);
-    NdTestBase::CreateConnector();
 
     //get the max supported depth QP, and receive Sgn number
     ND2_ADAPTER_INFO adaptorInfo;
@@ -28,6 +26,9 @@ void NdQPMaxAllServer::RunTest(
     LogIfErrorExit(hr, ND_SUCCESS, "Querying dataptor info failed!", __LINE__);
     queueDepth = adaptorInfo.MaxReceiveQueueDepth;
     nSge = adaptorInfo.MaxReceiveSge;
+
+    NdTestBase::CreateCQ(queueDepth*2);
+    NdTestBase::CreateConnector();
 
     //create queue pair, expecting success
     NdTestBase::CreateQueuePair(queueDepth, adaptorInfo.MaxInitiatorQueueDepth, nSge, adaptorInfo.MaxInitiatorSge);

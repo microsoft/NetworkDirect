@@ -3,7 +3,9 @@
 //
 // ndpingpong.cpp - NetworkDirect send/recv pingpong test
 //
-
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <initguid.h>
 #include "ndcommon.h"
 #include "ndtestutil.h"
 #include "logging.h"
@@ -68,6 +70,7 @@ public:
         NdTestBase::GetAdapterInfo(&adapterInfo);
 
         m_queueDepth = min(adapterInfo.MaxCompletionQueueDepth, adapterInfo.MaxReceiveQueueDepth);
+        m_queueDepth = min(m_queueDepth, adapterInfo.MaxInitiatorQueueDepth);
         m_queueDepth = (queueDepth != 0) ? min(queueDepth, m_queueDepth) : m_queueDepth;
         m_inlineThreshold = adapterInfo.InlineRequestThreshold;
 
@@ -209,6 +212,7 @@ public:
         NdTestBase::GetAdapterInfo(&adapterInfo);
 
         m_queueDepth = min(adapterInfo.MaxCompletionQueueDepth, adapterInfo.MaxInitiatorQueueDepth);
+        m_queueDepth = min(m_queueDepth, adapterInfo.MaxReceiveQueueDepth);
         m_queueDepth = (queueDepth != 0) ? min(queueDepth, m_queueDepth) : m_queueDepth;
         m_inlineThreshold = adapterInfo.InlineRequestThreshold;
 

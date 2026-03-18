@@ -17,7 +17,7 @@ void NdLargePrivateDataServer::RunTest(
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_HdrLen + x_MaxXfer, ND_MR_FLAG_ALLOW_LOCAL_WRITE);
 
-    NdTestBase::CreateCQ(nSge);
+    NdTestBase::CreateCQ(queueDepth*2);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(queueDepth, nSge);
     NdTestServerBase::CreateListener();
@@ -68,7 +68,7 @@ void NdLargePrivateDataClient::RunTest(
     NdTestBase::CreateMR();
     NdTestBase::RegisterDataBuffer(x_MaxXfer, ND_MR_FLAG_ALLOW_REMOTE_READ | ND_MR_FLAG_ALLOW_REMOTE_WRITE);
 
-    NdTestBase::CreateCQ(nSge, ND_SUCCESS);
+    NdTestBase::CreateCQ(queueDepth*2, ND_SUCCESS);
     NdTestBase::CreateConnector();
     NdTestBase::CreateQueuePair(queueDepth, nSge);
 
@@ -82,13 +82,13 @@ void NdLargePrivateDataClient::RunTest(
 
     //attempt to connect with larger private data
     const void* data = new (std::nothrow) char[maxCallerData + 1LL];
-    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, data, maxCallerData + 1,
+    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, TRUE, data, maxCallerData + 1,
         ND_INVALID_BUFFER_SIZE, "Expecting Access violation when data size is bigger than maxCallerData");
     delete[] data;
 
     //try with just enough data, should get ND_SUCCESS
     data = new (std::nothrow) char[maxCallerData];
-    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, data, maxCallerData,
+    NdTestClientBase::Connect(v4Src, v4Dst, 1, 1, TRUE, data, maxCallerData,
         ND_SUCCESS, "Expecting ND_SUCCESS when data size is just maxCallerData");
     delete[] data;
 
